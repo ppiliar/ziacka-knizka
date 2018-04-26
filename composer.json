@@ -1,0 +1,21 @@
+{
+  "name": "umb_jsilaci/WebTe3-projekt",
+  "description": "Ukazkovy projekt pre predmet Webove technologie 3",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Jozef Silaci",
+      "email": "jozef.silaci@umb.sk"
+    }
+  ],
+  "require": {
+    "twig/twig": "~2.0",
+    "monolog/monolog": "^1.23"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\":     "src/"
+    }
+  }
+}

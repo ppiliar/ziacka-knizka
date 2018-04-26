@@ -1,0 +1,26 @@
+{% extends '/base.twig' %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-md-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-info text-light">Prihláste sa, prosím</div>
+                <div class="card-body">
+                    <form action="{{ baseUrl }}/user/login" method="post">
+                        <div class="form-group">
+                            <label for="username">Email address</label>
+                            <input type="text" class="form-control" name="username" id="username"
+                                   placeholder="Používateľské meno">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   placeholder="Heslo">
+                        </div>
+                        <button type="submit" class="btn btn-info pull-right">Prihlásiť sa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

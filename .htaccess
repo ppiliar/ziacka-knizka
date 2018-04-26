@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /~ppiliar/ziacka/
+RewriteRule (^.*\.(css|js|png|jpg|gif|svg)) $1 [L]
+RewriteRule .* index.php 

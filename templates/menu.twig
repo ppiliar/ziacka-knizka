@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+    <div class="container">
+        <a class="navbar-brand" href="#">Môj web</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {{ request.controller == 'index' ? 'active' }}">
+                    <a class="nav-link" href="{{ baseUrl }}/">Úvod</a>
+                </li>
+                {% if loggedUserRole == 'ADMIN' %}
+                <li class="nav-item {{ request.controller == 'links' ? 'active' }}">
+                    <a class="nav-link" href="{{ baseUrl }}/links">Linky</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav pull-right">
+                <li class="nav-item active">
+                    {% if not loggedUser %}
+                        <a class="nav-link" href="{{ baseUrl }}/user/login"><i class="fa fa-sign-in"></i> Prihlásiť sa</a>
+                    {% else %}
+                        <div class="badge badge-info">Prihlásený používateľ {{ loggedUser }} [{{ loggedUserRole }}]</div>
+                        <a class="nav-link" href="{{ baseUrl }}/user/logout"><i class="fa fa-sign-out"></i> Odhlásiť sa</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
