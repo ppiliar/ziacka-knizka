@@ -10,10 +10,13 @@
                 <li class="nav-item {{ request.controller == 'index' ? 'active' }}">
                     <a class="nav-link" href="{{ baseUrl }}/">Úvod</a>
                 </li>
-                {% if loggedUserRole == 'ADMIN' %}
-                <li class="nav-item {{ request.controller == 'links' ? 'active' }}">
-                    <a class="nav-link" href="{{ baseUrl }}/links">Linky</a>
-                </li>
+                {% if loggedUserRole == 'admin' %}
+                    <li class="nav-item {{ request.controller == 'user' ? 'active' }}">
+                        <a class="nav-link" href="{{ baseUrl }}/user">Používatelia</a>
+                    </li>
+                    <li class="nav-item {{ request.controller == 'user' ? 'active' }}">
+                        <a class="nav-link" href="{{ baseUrl }}/user/classrooms">Triedy</a>
+                    </li>
                 {% endif %}
             </ul>
             <ul class="navbar-nav pull-right">

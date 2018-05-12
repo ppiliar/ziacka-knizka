@@ -25,6 +25,20 @@ class Request {
     }
 
     /**
+     * Ziskat hodnotu jedneho parametra
+     * @param string $paramName Nazov parametra
+     * @param string $defaultValue Vychodzia hodnota ak parameter nebol zadany
+     * @return string
+     */
+    public static function getParam($paramName, $defaultValue = null) {
+        if (self::$parsedUrl == null) {
+            self::parseUrl();
+        }
+
+        return self::$parsedUrl['params'][$paramName] ?? $defaultValue;
+    }
+
+    /**
      * Ziskat nazov akcie
      * @return string
      */

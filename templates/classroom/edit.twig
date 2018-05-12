@@ -1,0 +1,28 @@
+{% extends '/base.twig' %}
+
+{% block title %}Upraviť triedu{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-md-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-info text-light">Upraviť triedu</div>
+                <div class="card-body">
+                    <form action="{{ baseUrl }}/user/editClass" method="post">
+                        <div class="form-group">
+                            <label for="meno">Meno</label>
+                            <input type="text" class="form-control" name="name" id="name"
+                                   placeholder="Meno" value="{{ classData.name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="id">Id</label>
+                            <input type="text" class="form-control" name="id" id="id"
+                                   placeholder="Id" value="{{ classData.id }}">
+                        </div>
+                        <button type="submit" class="btn btn-info pull-right">Uložiť</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

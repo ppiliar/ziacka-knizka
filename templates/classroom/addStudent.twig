@@ -1,0 +1,26 @@
+{% extends '/base.twig' %}
+
+{% block title %}Pridat ziaka{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-md-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-info text-light">Pridat ziaka</div>
+                <div class="card-body">
+                    <form action="{{ baseUrl }}/user/addStudent" method="post">
+                        <div class="form-group">
+                            <label for="studentSelect">Vybrat ziakaov</label>
+                            <select multiple class="form-control" id="studentSelect">
+                                <option disabled>Login Meno Priezvisko</option>
+                                {% for student in students %}
+                                    <option>{{ student.login }} {{ student.meno }} {{ student.priezvisko }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

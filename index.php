@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 // inicializujem session
 session_start(['name' => 'web3-projekt']);
@@ -19,3 +18,6 @@ try {
     echo $e->getTraceAsString();
     echo "</pre>";
 }
+
+
+

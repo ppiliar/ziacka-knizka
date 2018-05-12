@@ -1,0 +1,34 @@
+{% extends '/base.twig' %}
+
+{% block title %}Zoznam tried{% endblock %}
+
+{% block content %}
+    <h1>Zoznam tried</h1>
+    <p>
+        <a class="btn btn-success" href="{{ baseUrl }}/user/editClass"><i class="fa fa-plus"></i> Nova trieda</a>
+    </p>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Trieda</th>
+            <th>Id</th>
+            <th>Pocet studentov</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for class in classrooms %}
+            <tr>
+                <td>{{ class.name }}</td>
+                <td>{{ class.id }}</td>
+                <td>{{ class.nostudents }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ baseUrl }}/user/editClass/classname/{{ class.name }}"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-danger" href="{{ baseUrl }}/user/deleteClass/classid/{{ class.id }}"><i class="fa fa-trash"></i></a>
+                    <a class="btn btn-warning" href="{{ baseUrl }}/user/showClassStudents/classid/{{ class.id }}"><i class="fa fa-address-book"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

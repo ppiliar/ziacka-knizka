@@ -1,15 +1,70 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jsilaci
- * Date: 24.04.2018
- * Time: 22:12
- */
 
 namespace App;
 
 
+use PHPUnit\Runner\Exception;
+
 class Users {
+
+    /**
+     * zoznam vsetkych pouzivatelov
+     * @return array
+     * @throws \Exception
+     */
+    public function getUsers() {
+        $db = \App\Db::get();
+        $result = $db->fetchAll("SELECT * FROM users");
+        return $result;
+    }
+
+    /**
+     * vymazat pouzivatela z databazy
+     * @param $username
+     * @throws \Exception
+     */
+    public function deleteUser($username) {
+        $db = \App\Db::get();
+        $db->delete('users', ["login = ?", [$username]]);
+    }
+
+    /**
+     * Zmena hesla pouzivatela
+     * @param $username
+     * @param $password
+     */
+    public function setPassword($username, $password) {
+        $db = \App\Db::get();
+        $userExists = $db->fetchOne("SELECT COUNT(*) FROM users WHERE login = ?", [$username]);
+        if (!$userExists) {
+            throw new Exception("Používateľ {$username} neexistuje");
+        }
+        $data = ['$password' => sha1($password)];
+        $db->update('users', $data,["login = ?", [$username]]);
+    }
+
+    /**
+     * Ulozit udaje o novom pouzivatelovi
+     * @param array $userData
+     * @throws \Exception
+     */
+    public function save(array $userData) {
+        // kontrola udajov
+        if ($userData['login'] == '') {
+            throw new \Exception("Login je povinný údaj!");
+        }
+
+        $db = \App\Db::get();
+        $userExists = $db->fetchOne("SELECT COUNT(*) FROM users WHERE login = ?", [$userData['login']]);
+
+        if ($userExists) {
+            $db->update('users', $userData, ["login = ?", [$userData['login']]]);
+        } else {
+            $userData['password'] = sha1('aaa');
+            $db->insert('users', $userData);
+        }
+    }
+
     /**
      * Overenie spravnosti prihlasovacich udajov pouzivatela
      * @param $username
@@ -22,7 +77,7 @@ class Users {
 
         // pri overovani hesla som vyuzil hashovaciu funkciu sha1 implementovanu priamo v MySQL
         // alternativne som mohol heslo najskor zahashovat pomocou PHP funkcie sha1 a potom ho vlozit do SQL dopytu
-        $result = $db->fetchOne("SELECT COUNT(*) FROM users WHERE login = ? AND heslo = sha1(?)"
+        $result = $db->fetchOne("SELECT COUNT(*) FROM users WHERE login = ? AND password = sha1(?)"
             , [$username, $password]);
 
         return $result == 1;

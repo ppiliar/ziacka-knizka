@@ -1,12 +1,12 @@
 {
-  "name": "umb_jsilaci/WebTe3-projekt",
-  "description": "Ukazkovy projekt pre predmet Webove technologie 3",
+  "name": "ppiliar/WebTe3-projekt",
+  "description": "Ziacka knizka",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
     {
-      "name": "Jozef Silaci",
-      "email": "jozef.silaci@umb.sk"
+      "name": "Peter  Piliar",
+      "email": "ppiliar@studenti.umb.sk"
     }
   ],
   "require": {

@@ -1,0 +1,38 @@
+{% extends '/base.twig' %}
+
+{% block title %}Zoznam používateľov{% endblock %}
+
+{% block content %}
+    <h1>Zoznam používateľov</h1>
+    <p>
+    <a class="btn btn-success" href="{{ baseUrl }}/user/edit"><i class="fa fa-plus"></i> Nový používateľ</a>
+    </p>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Login</th>
+            <th>Meno</th>
+            <th>Priezvisko</th>
+            <th>Mail</th>
+            <th>Rola</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.login }}</td>
+            <td>{{ user.meno }}</td>
+            <td>{{ user.priezvisko }}</td>
+            <td>{{ user.mail }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                <a class="btn btn-primary" href="{{ baseUrl }}/user/edit/username/{{ user.login }}"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger" href="{{ baseUrl }}/user/delete/username/{{ user.login }}"><i class="fa fa-trash"></i></a>
+                <a class="btn btn-warning" href="{{ baseUrl }}/user/passwd/username/{{ user.login }}"><i class="fa fa-key"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
