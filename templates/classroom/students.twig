@@ -1,11 +1,11 @@
 {% extends '/base.twig' %}
 
-{% block title %}Zoznam ziakov v triede{% endblock %}
+{% block title %}Zoznam ziakov v {{ className }}{% endblock %}
 
 {% block content %}
-    <h1>Zoznam ziakov v triede</h1>
+    <h1>Zoznam ziakov v {{ className }}</h1>
     <p>
-        <a class="btn btn-success" href="{{ baseUrl }}/user/addStudent"><i class="fa fa-plus"></i>Pridat ziaka do triedy</a>
+        <a class="btn btn-success" href="{{ baseUrl }}/classMan/addStudent/classid/{{ classId }}"><i class="fa fa-plus"></i> Pridat ziaka do triedy</a>
     </p>
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -19,15 +19,15 @@
         </tr>
         </thead>
         <tbody>
-        {% for user in users %}
+        {% for student in students %}
             <tr>
-                <td>{{ user.login }}</td>
-                <td>{{ user.meno }}</td>
-                <td>{{ user.priezvisko }}</td>
-                <td>{{ user.mail }}</td>
-                <td>{{ user.role }}</td>
+                <td>{{ student.login }}</td>
+                <td>{{ student.meno }}</td>
+                <td>{{ student.priezvisko }}</td>
+                <td>{{ student.mail }}</td>
+                <td>{{ student.role }}</td>
                 <td>
-                    <a class="btn btn-danger" href="{{ baseUrl }}/classroom/deleteFromClass/username/{{ user.login }}"><i class="fa fa-trash"></i></a>
+                    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/removeStudent/classid/{{ classId }}/userid/{{ student.user_id }}"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         {% endfor %}

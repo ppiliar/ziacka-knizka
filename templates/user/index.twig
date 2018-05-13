@@ -27,9 +27,9 @@
             <td>{{ user.mail }}</td>
             <td>{{ user.role }}</td>
             <td>
-                <a class="btn btn-primary" href="{{ baseUrl }}/user/edit/username/{{ user.login }}"><i class="fa fa-edit"></i></a>
-                <a class="btn btn-danger" href="{{ baseUrl }}/user/delete/username/{{ user.login }}"><i class="fa fa-trash"></i></a>
-                <a class="btn btn-warning" href="{{ baseUrl }}/user/passwd/username/{{ user.login }}"><i class="fa fa-key"></i></a>
+                <a class="btn btn-primary" href="{{ baseUrl }}/userMan/edit/username/{{ user.login }}"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger" href="{{ baseUrl }}/userMan/delete/username/{{ user.login }}"><i class="fa fa-trash"></i></a>
+                <a class="btn btn-warning" href="{{ baseUrl }}/userMan/passwd/username/{{ user.login }}"><i class="fa fa-key"></i></a>
             </td>
         </tr>
         {% endfor %}

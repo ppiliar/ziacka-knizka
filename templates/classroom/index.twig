@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Zoznam tried</h1>
     <p>
-        <a class="btn btn-success" href="{{ baseUrl }}/user/editClass"><i class="fa fa-plus"></i> Nova trieda</a>
+        <a class="btn btn-success" href="{{ baseUrl }}/classMan/editClass"><i class="fa fa-plus"></i> Nova trieda</a>
     </p>
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -13,6 +13,7 @@
             <th>Trieda</th>
             <th>Id</th>
             <th>Pocet studentov</th>
+            <th>Pocet predmetov</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -22,10 +23,12 @@
                 <td>{{ class.name }}</td>
                 <td>{{ class.id }}</td>
                 <td>{{ class.nostudents }}</td>
+                <td>{{ class.nosubjects }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ baseUrl }}/user/editClass/classname/{{ class.name }}"><i class="fa fa-edit"></i></a>
-                    <a class="btn btn-danger" href="{{ baseUrl }}/user/deleteClass/classid/{{ class.id }}"><i class="fa fa-trash"></i></a>
-                    <a class="btn btn-warning" href="{{ baseUrl }}/user/showClassStudents/classid/{{ class.id }}"><i class="fa fa-address-book"></i></a>
+                    <a class="btn btn-primary" href="{{ baseUrl }}/classMan/editClass/classname/{{ class.name }}"><i class="fa fa-edit" data-placement="top" title="Upravit triedu"></i></a>
+                    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/deleteClass/classid/{{ class.id }}"><i class="fa fa-trash" data-toggle="tooltip" title="Vymazat triedu"></i></a>
+                    <a class="btn btn-warning text-white" href="{{ baseUrl }}/classMan/students/classid/{{ class.id }}"><i class="fa fa-address-book" data-toggle="tooltip" title="Spravovat ziakov"></i></a>
+                    <a class="btn btn-success" href="{{ baseUrl }}/classMan/subjects/classid/{{ class.id }}"><i class="fa fa-book" data-toggle="tooltip" title="Spravovat predmety"></i></a>
                 </td>
             </tr>
         {% endfor %}

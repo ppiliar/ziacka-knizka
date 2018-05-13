@@ -1,0 +1,32 @@
+{% extends '/base.twig' %}
+
+{% block title %}Pridat predmet{% endblock %}
+
+{% block content %}
+    <h1>Pridat predmet do {{ className }}</h1>
+    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/subjects/classid/{{ classId }}"><i class="fa fa-plus"></i> Spat na zoznam predmetov</a>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Predmet</th>
+            <th>Id</th>
+            <th>Vyucujuci</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for subject in subjects %}
+            {% if subject.classroom_id != classId %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.teacher_name }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ baseUrl }}/classMan/addSubject/classid/{{ classId }}/subjectid/{{ subject.id }}"><i class="fa fa-check"></i></a>
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

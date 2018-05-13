@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Data;
 
-
+use App\Db;
+use App\Template;
 use PHPUnit\Runner\Exception;
 
 class Users {
@@ -94,5 +95,11 @@ class Users {
         $userData = $db->fetchRow("SELECT * FROM users WHERE login = ?", [$username]);
 
         return $userData;
+    }
+
+    public function getTeachers(){
+        $db = Db::get();
+        $teachers = $db->fetchAll("SELECT login,meno,priezvisko,user_id FROM users"); //TODO WHERE role = teachers
+        return $teachers;
     }
 }
