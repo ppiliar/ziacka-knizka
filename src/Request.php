@@ -111,15 +111,17 @@ class Request {
      * Vykonat akciu na zaklade nazvu akcie a kontrolera
      * @param string $controllerName
      * @param string $actionName
+     * @param null $params
      * @return string
      */
-    public static function executeAction($controllerName, $actionName) {
+    public static function executeAction($controllerName, $actionName, $params=null) {
         $controller = self::getControllerByName($controllerName);
         $actionMethodName = "{$actionName}Action";
 
         // upravim nazvy akcie a kontrolera v twigu aby som v templatoch pouzival aktialne data
         self::$parsedUrl['controller'] = $controllerName;
         self::$parsedUrl['action'] = $actionName;
+        self::$parsedUrl['params'] = $params;
         Template::getTwig()->addGlobal('request', self::$parsedUrl);
 
         return $controller->$actionMethodName();

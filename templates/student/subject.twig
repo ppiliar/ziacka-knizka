@@ -1,0 +1,28 @@
+{% extends '/base.twig' %}
+
+{% block title %}Znamky{% endblock %}
+
+{% block content %}
+    <h3>Znamky na predmete {{ subjectName }}</h3>
+    <p>
+        <a class="btn btn-danger" href="{{ baseUrl }}/studentMan"><i class="fa fa-arrow-left"></i> Spat</a>
+    </p>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Znamka</th>
+            <th>Opis</th>
+            <th>Datum</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for grade in grades %}
+            <tr>
+                <td>{{ grade.grade }}</td>
+                <td>{{ grade.description }}</td>
+                <td>{{ grade.date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

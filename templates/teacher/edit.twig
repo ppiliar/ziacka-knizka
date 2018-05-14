@@ -1,0 +1,37 @@
+{% extends '/base.twig' %}
+
+{% block title %}Upraviť známku{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-md-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-info text-light">Upraviť známku</div>
+                <div class="card-body">
+                    <form action="{{ baseUrl }}/teacherMan/editGrade" method="post">
+                        <div class="form-group">
+                            <label for="meno">Opis</label>
+                            <input type="text" class="form-control" name="description" id="description"
+                                   placeholder="Meno" value="{{ gradeData.description }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="id">Znamka</label>
+                            <select class="form-control" name="grade" id="grade">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="student_id" value="{{ gradeData.student_id }}">
+                        <input type="hidden" name="subject_id" value="{{ gradeData.subject_id }}">
+                        <input type="hidden" name="grade_id" value="{{ gradeData.grade_id }}">
+                        <input type="hidden" name="classid" value="{{ classId }}">
+                        <button type="submit" class="btn btn-info pull-right">Uložiť</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -21,6 +21,16 @@
                         <a class="nav-link" href="{{ baseUrl }}/subjectMan">Predmety</a>
                     </li>
                 {% endif %}
+                {% if loggedUserRole == 'teacher' %}
+                <li class="nav-item {{ request.controller == 'teacherMan' ? 'active' }}">
+                    <a class="nav-link" href="{{ baseUrl }}/teacherMan">Moje predmety</a>
+                </li>
+                {% endif %}
+                {% if loggedUserRole == 'student' %}
+                <li class="nav-item {{ request.controller == 'studentMan' ? 'active' }}">
+                    <a class="nav-link" href="{{ baseUrl }}/studentMan">Moje znamky</a>
+                </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav pull-right">
                 <li class="nav-item active">

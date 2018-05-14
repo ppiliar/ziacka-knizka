@@ -35,9 +35,9 @@ class UserMan
      */
     public function deleteAction()
     {
+        $errorMessage = null;
         $users = new Users();
         $username = \App\Request::getParam('username');
-        $usersList = $users->getUsers();
         try {
             $users->deleteUser($username);
         }catch (\Exception $e){
@@ -47,7 +47,8 @@ class UserMan
                 $errorMessage = "Chyba: {$e->getMessage()}";
             }
         }
-        //return \App\Request::executeAction('userMan', 'index');
+        //return \App\Request::executeAction('userMan', 'index', ['errorMessage' => $errorMessage]);
+        $usersList = $users->getUsers();
         return Template::getTwig()->render('user/index.twig',
             ['users' => $usersList, 'errorMessage' => $errorMessage]);
     }

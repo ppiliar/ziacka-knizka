@@ -1,0 +1,30 @@
+{% extends '/base.twig' %}
+
+{% block title %}Zoznam ziakov v {{ className }}{% endblock %}
+
+{% block content %}
+    <h3>Zoznam ziakov v {{ className }} - {{ subjectName }}</h3>
+    <p>
+        <a class="btn btn-danger" href="{{ baseUrl }}/teacherMan/"><span class="fa fa-arrow-left"></span> Späť na predmety</a>
+    </p>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Meno</th>
+            <th>Priezvisko</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <td>{{ student.meno }}</td>
+                <td>{{ student.priezvisko }}</td>
+                <td>
+                    <a class="btn btn-warning" href="{{ baseUrl }}/teacherMan/studentGrades/studentid/{{ student.user_id }}/subjectid/{{ subjectId }}/classid/{{ classId }}"><i class="fa fa-graduation-cap"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

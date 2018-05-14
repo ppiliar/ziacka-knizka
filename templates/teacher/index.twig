@@ -4,15 +4,12 @@
 
 {% block content %}
     <h3>Zoznam predmetov</h3>
-    <p>
-        <a class="btn btn-success" href="{{ baseUrl }}/subjectMan/edit"><i class="fa fa-plus"></i> Novy predmet</a>
-    </p>
     <table class="table table-striped table-hover table-bordered">
         <thead>
         <tr>
             <th>Predmet</th>
             <th>Id</th>
-            <th>Vyucujuci</th>
+            <th>Trieda</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -21,10 +18,9 @@
             <tr>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.id }}</td>
-                <td>{{ subject.teacher_name }}</td>
+                <td>{{ subject.classroom_name }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ baseUrl }}/subjectMan/edit/id/{{ subject.id }}"><i class="fa fa-edit"></i></a>
-                    <a class="btn btn-danger" href="{{ baseUrl }}/subjectMan/delete/id/{{ subject.id }}"><i class="fa fa-trash"></i></a>
+                    <a class="btn btn-primary" href="{{ baseUrl }}/teacherMan/subject/subjectid/{{ subject.id }}/classid/{{ subject.classroom_id }}"><i class="fa fa-address-card"></i></a>
                 </td>
             </tr>
         {% endfor %}

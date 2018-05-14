@@ -13,7 +13,7 @@ class Security
 {
     /**
      * Ak pouzivatel nema pozadovanu rolu aplikacia konci
-     * @param string|array $roleNames Nazov pozadovanyj roly, alebo pole rol, ktore su povolene
+     * @param string|array $roleNames Nazov pozadovanej roly, alebo pole rol, ktore su povolene
      */
     public static function isGranted($roleNames) {
         if (is_string($roleNames)) {

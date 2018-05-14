@@ -154,8 +154,7 @@ class Classroom
         $db = \App\Db::get();
         $tableData['student_id'] = $studentId;
         $tableData['classroom_id'] = $classId;
-        echo "INSERT";
-        print_r($tableData);
+        //print_r($tableData);
         $studentExists = $db->fetchOne("SELECT COUNT(*) FROM class_students WHERE student_id = ?", [$studentId]);
         if ($studentExists) {
             $db->update('class_students', $tableData, ["student_id = ?", [$tableData['student_id']]]);

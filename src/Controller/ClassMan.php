@@ -92,7 +92,7 @@ class ClassMan
 
         $userlist = $classroom->getUsers();
         $className = $classroom->getClassName($classId);
-        print_r($userlist);
+        //print_r($userlist);
         return Template::getTwig()->render('classroom/addStudent.twig',
             ['users' => $userlist, 'classId' => $classId, 'className' => $className]);
     }
@@ -103,7 +103,7 @@ class ClassMan
         $classroomDO = new Classroom();
         $subjects = $classroomDO->getSubjects($classId);
         $className = $classroomDO->getClassName($classId);
-        print_r($subjects);
+        //print_r($subjects);
 
         return Template::getTwig()->render('classroom/subjects.twig',
             ['subjects' => $subjects, 'classId' => $classId, 'className' => $className]);
