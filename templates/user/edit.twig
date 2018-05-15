@@ -27,12 +27,28 @@
                         <div class="form-group">
                             <label for="mail">Mail</label>
                             <input type="text" class="form-control" name="mail" id="mail"
-                                   placeholder="Mail" value="{{ userData.email }}">
+                                   placeholder="Mail" value="{{ userData.mail }}">
                         </div>
                         <div class="form-group">
-                            <input type="radio"  name="role" id="mail" value="student" {{ (userData.role != 'admin') ? 'checked="checked"' }}> student <br />
-                            <input type="radio"  name="role" id="mail" value="admin" {{ (userData.role == 'admin') ? 'checked="checked"' }}> admin
+                            <label for="role">Rola:</label>
+                            <select class="form-control" id="role" name="role">
+                                <option value="student" {{ (userData.role == 'student') ? 'selected' }}>student</option>
+                                <option value="teacher" {{ (userData.role == 'teacher') ? 'selected' }}>teacher</option>
+                                <option value="admin" {{ (userData.role == 'admin') ? 'selected' }}>admin</option>
+                            </select>
                         </div>
+                        {% if userData.role == 'student' %}
+                        <div class="form-group">
+                            <label>Trieda</label>
+                            <select class="form-control" id="classroom_id" name="classroom_id">
+                                {% for classroom in classrooms %}
+                                    <option value={{ classroom.id }} {{ (userData.name == classroom.name) ? 'selected' }}>{{ classroom.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                            {% else %}
+                            <input type="hidden" value="" name="classroom_id" id="classroom_id">
+                        {% endif %}
                         <button type="submit" class="btn btn-info pull-right">Uložiť</button>
                     </form>
                 </div>

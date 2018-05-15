@@ -21,8 +21,8 @@ class Subject
         $db = Db::get();
         $result = $db->fetchAll("SELECT * FROM subjects");
         foreach ($result as &$uc){
-            $id = $uc['teacher_id'];
-            $tname = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE user_id =?", [$id]);
+            $id = $uc['teacher_login'];
+            $tname = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE login =?", [$id]);
             $uc['teacher_name']=$tname['login'];
         }
         return $result;
@@ -57,6 +57,8 @@ class Subject
 
     public function deleteSubject($subjectId){
         $db = \App\Db::get();
+        $db->delete('grades', ["subject_id = ?", [$subjectId]]);
+        $db->delete('class_subjects', ["subject_id = ?", [$subjectId]]);
         $db->delete('subjects', ["id = ?", [$subjectId]]);
     }
 }

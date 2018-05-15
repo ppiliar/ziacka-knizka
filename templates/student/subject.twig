@@ -10,16 +10,16 @@
     <table class="table table-striped table-hover table-bordered">
         <thead>
         <tr>
-            <th>Znamka</th>
             <th>Opis</th>
+            <th>Znamka</th>
             <th>Datum</th>
         </tr>
         </thead>
         <tbody>
         {% for grade in grades %}
             <tr>
-                <td>{{ grade.grade }}</td>
                 <td>{{ grade.description }}</td>
+                <td>{{ grade.grade }}</td>
                 <td>{{ grade.date }}</td>
             </tr>
         {% endfor %}

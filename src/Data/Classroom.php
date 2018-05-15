@@ -22,7 +22,7 @@ class Classroom
         $db = Db::get();
 
         $classrooms = $db->fetchAll("SELECT * FROM classrooms");
-        $students = $db->fetchAll("SELECT COUNT(student_id) AS nostudents FROM classrooms
+        $students = $db->fetchAll("SELECT COUNT(student_login) AS nostudents FROM classrooms
                                         LEFT JOIN class_students ON class_students.classroom_id = classrooms.id
                                         GROUP BY classrooms.id");
         $subjects = $db->fetchAll("SELECT COUNT(subject_id) AS nosubjects FROM classrooms
@@ -53,12 +53,12 @@ class Classroom
     public function getClassStudents($classId){
         $db = Db::get();
         /*$students = $db->fetchAll("SELECT login,meno,priezvisko,classrooms.name FROM users
-                  LEFT JOIN class_students ON class_students.student_id = users.user_id 
+                  LEFT JOIN class_students ON class_students.student_login = users.login
                   LEFT JOIN classrooms ON class_students.classroom_id = classrooms.id
                   WHERE class_students.classroom_id = ?", [$classId]);*/
 
         $students = $db->fetchAll("SELECT * FROM users 
-                  LEFT JOIN class_students ON class_students.student_id = users.user_id 
+                  LEFT JOIN class_students ON class_students.student_login = users.login
                   WHERE class_students.classroom_id = ?", [$classId]);
         return $students;
     }
@@ -96,7 +96,7 @@ class Classroom
     public function getUsers(){
         $db = \App\Db::get();
         $result = $db->fetchAll("SELECT * FROM users 
-                                    LEFT JOIN class_students ON users.user_id = class_students.student_id
+                                    LEFT JOIN class_students ON users.login = class_students.student_login
                                     LEFT JOIN classrooms ON class_students.classroom_id = classrooms.id");
         return $result;
     }
@@ -113,8 +113,8 @@ class Classroom
                                                 LEFT JOIN class_subjects ON class_subjects.subject_id = subjects.id
                                                 WHERE class_subjects.classroom_id = ?",[$classId]);
         foreach ($result as &$sub){
-            $id = $sub['teacher_id'];
-            $tname = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE user_id =?", [$id]);
+            $login = $sub['teacher_login'];
+            $tname = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE login =?", [$login]);
             $sub['teacher_name']=$tname['login'];
         }
         return $result;
@@ -122,12 +122,11 @@ class Classroom
 
     public function getSelectableSubject($classId){
         $db = \App\Db::get();
-        $result = $db->fetchAll("SELECT id FROM subjects
-                                               LEFT JOIN class_subjects ON class_subjects.subject_id = subjects.id
-                                               WHERE class_subjects.classroom_id = ?",[$classId]);
-        print_r($result);
         $subjects = $db->fetchAll("SELECT * FROM subjects");
 
+        $result = $db->fetchAll("SELECT * FROM subjects
+                                               LEFT JOIN class_subjects ON class_subjects.subject_id = id
+                                              WHERE class_subjects.classroom_id =?", [$classId]);
         foreach ($subjects as $key => $subject) {
             foreach ($result as $res){
                 if($res['id']==$subject['id']){
@@ -136,8 +135,8 @@ class Classroom
             }
         }
         foreach ($subjects as &$sub){
-            $id = $sub['teacher_id'];
-            $name = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE user_id =?", [$id]);
+            $login = $sub['teacher_name'];
+            $name = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE login =?", [$login]);
             $sub['teacher_name']=$name['login'];
         }
 
@@ -146,32 +145,35 @@ class Classroom
 
     /**
      * Pridat ziaka do triedy
-     * @param $studentId
+     * @param $studentLogin
      * @param $classId
      * @throws \Exception
      */
-    public function addStudent($studentId, $classId){
+    public function addStudent($studentLogin, $classId){
         $db = \App\Db::get();
-        $tableData['student_id'] = $studentId;
+        $tableData['student_login'] = $studentLogin;
         $tableData['classroom_id'] = $classId;
         //print_r($tableData);
-        $studentExists = $db->fetchOne("SELECT COUNT(*) FROM class_students WHERE student_id = ?", [$studentId]);
-        if ($studentExists) {
-            $db->update('class_students', $tableData, ["student_id = ?", [$tableData['student_id']]]);
-        }else {
-            $db->insert("class_students", $tableData);
+        $role = $db->fetchOne("SELECT role FROM users WHERE login =?", [$studentLogin]);
+        if($role == 'student') {
+            $studentExists = $db->fetchOne("SELECT COUNT(*) FROM class_students WHERE student_login = ?", [$studentLogin]);
+            if ($studentExists) {
+                $db->update('class_students', $tableData, ["student_login = ?", [$tableData['student_login']]]);
+            } else {
+                $db->insert("class_students", $tableData);
+            }
         }
     }
 
     /**
      * Odobrat ziaka z triedy
-     * @param $studentId
+     * @param $studentLogin
      * @param $classId
      * @throws \Exception
      */
-    public function removeStudent($studentId, $classId){
+    public function removeStudent($studentLogin, $classId){
         $db = \App\Db::get();
-        $db->delete("class_students", ["student_id = ? AND classroom_id = ?", [$studentId,$classId]]);
+        $db->delete("class_students", ["student_login = ? AND classroom_id = ?", [$studentLogin,$classId]]);
     }
 
     /**
@@ -187,7 +189,7 @@ class Classroom
                                                 WHERE classroom_id = ? AND subject_id = ? ", [$classId, $subjectId]);
         if ($subjectExists) {
             $db->update('class_subjects', $tableData,
-                ["subject_id = ? AND classroom_id = ?", [$tableData['student_id'], $tableData['classroom_id']]]);
+                ["subject_id = ? AND classroom_id = ?", [$tableData['subject_id'], $tableData['classroom_id']]]);
         }else {
             $db->insert("class_subjects", $tableData);
         }

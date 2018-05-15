@@ -21,9 +21,9 @@
                         </div>
                         <div class="form-group">
                             <label for="teacher">Vyucujuci</label>
-                            <select class="form-control" name="teacher_id" id="teacher_id">
+                            <select class="form-control" name="teacher_login" id="teacher_login">
                                 {% for teacher in teachers %}
-                                    <option value={{ teacher.user_id }}>{{ teacher.login }}</option>
+                                    <option value={{ teacher.login }}>{{ teacher.login }}</option>
                                 {% endfor %}
                             </select>
                         </div>

@@ -6,13 +6,13 @@
     <h3>Znamky {{ studentName }} na predmete {{ subjectName }}</h3>
     <p>
         <a class="btn btn-danger" href="{{ baseUrl }}/teacherMan/subject/subjectid/{{ subjectId }}/classid/{{ classId }}"><i class="fa fa-arrow-left"></i> Spat</a>
-        <a class="btn btn-success" href="{{ baseUrl }}/teacherMan/editGrade/studentid/{{ studentId }}/subjectid/{{ subjectId }}/classid/{{ classId }}"><i class="fa fa-plus"></i> Pridat znamku</a>
+        <a class="btn btn-success" href="{{ baseUrl }}/teacherMan/editGrade/studentlogin/{{ studentLogin }}/subjectid/{{ subjectId }}/classid/{{ classId }}"><i class="fa fa-plus"></i> Pridat znamku</a>
     </p>
     <table class="table table-striped table-hover table-bordered">
         <thead>
         <tr>
-            <th>Znamka</th>
             <th>Opis</th>
+            <th>Znamka</th>
             <th>Datum</th>
             <th>&nbsp;</th>
         </tr>
@@ -20,8 +20,8 @@
         <tbody>
         {% for grade in grades %}
             <tr>
-                <td>{{ grade.grade }}</td>
                 <td>{{ grade.description }}</td>
+                <td>{{ grade.grade }}</td>
                 <td>{{ grade.date }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ baseUrl }}/teacherMan/editGrade/gradeid/{{ grade.grade_id }}/classid/{{ classId }}"><i class="fa fa-edit"></i></a>

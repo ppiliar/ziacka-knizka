@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Data\Classroom;
 use App\Security;
 use App\Data\Users;
 use App\Template;
@@ -86,12 +87,16 @@ class UserMan
      */
     public function editAction()
     {
-        $users = new Users();
+        $usersDO = new Users();
+        $classroomDO = new Classroom();
         $errorMessage = null;
         if (\App\Request::isPost()) {
             $userData = \App\Request::getParams();
+            $classroomId = $userData['classroom_id'];
+            unset($userData['classroom_id']);
             try {
-                $users->save($userData);
+                $usersDO->save($userData);
+                $classroomDO->addStudent($userData['login'], $classroomId);
                 Template::getTwig()->addGlobal('successMessage', "Používateľ {$userData['login']} bol uložený.");
                 return \App\Request::executeAction('userMan', 'index');
             } catch (\Exception $e) {
@@ -100,14 +105,15 @@ class UserMan
         } else {
             $editUser = \App\Request::getParam('username', false);
             if ($editUser) {
-                $userData = $users->getUserData($editUser);
+                $userData = $usersDO->getUserData($editUser);
             } else {
                 $userData = [];
             }
         }
-
+        $classrooms = $classroomDO->getClassrooms();
         return Template::getTwig()->render('user/edit.twig', [
             'userData' => $userData,
+            'classrooms' => $classrooms,
             'errorMessage' => $errorMessage
         ]);
     }

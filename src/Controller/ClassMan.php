@@ -56,7 +56,6 @@ class ClassMan
     {
         $errorMessage = null;
         $classroomDO = new Classroom();
-        $classrooms = $classroomDO->getClassrooms();
         $classid = \App\Request::getParam('classid');
         try {
             $classroomDO->deleteClass($classid);
@@ -67,6 +66,7 @@ class ClassMan
                 $errorMessage = "Chyba: {$e->getMessage()}";
             }
         }
+        $classrooms = $classroomDO->getClassrooms();
         return Template::getTwig()->render('classroom/index.twig',
             ['classrooms' => $classrooms, 'errorMessage' => $errorMessage]);
     }
@@ -84,10 +84,10 @@ class ClassMan
     public function addStudentAction(){
 
         $classId = \App\Request::getParam('classid');
-        $userId = \App\Request::getParam('userid');
+        $studentLogin = \App\Request::getParam('studentlogin');
         $classroom = new Classroom();
-        if(\App\Request::getParam('userid')!=null){
-            $classroom->addStudent($userId, $classId);
+        if($studentLogin!=null){
+            $classroom->addStudent($studentLogin, $classId);
         }
 
         $userlist = $classroom->getUsers();
@@ -95,6 +95,25 @@ class ClassMan
         //print_r($userlist);
         return Template::getTwig()->render('classroom/addStudent.twig',
             ['users' => $userlist, 'classId' => $classId, 'className' => $className]);
+    }
+
+
+    public function removeStudentAction(){
+        $errorMessage = null;
+        $classId = \App\Request::getParam('classid');
+        $studentLogin = \App\Request::getParam('studentlogin');
+        $classroomDO = new Classroom();
+        try {
+            $classroomDO->removeStudent($studentLogin, $classId);
+        }catch (\Exception $e) {
+            $errorMessage = "Chyba: {$e->getMessage()}";
+        }
+
+        $students = $classroomDO->getClassStudents($classId);
+        $className = $classroomDO->getClassName($classId);
+
+        return Template::getTwig()->render('classroom/students.twig',
+            ['students' => $students, 'classId' => $classId, 'className' => $className, 'errorMessage' => $errorMessage]);
     }
 
     public function subjectsAction(){
@@ -120,33 +139,13 @@ class ClassMan
             $classroomDO->addSubject($subjectId, $classId);
         }
 
-
-
         $className = $classroomDO->getClassName($classId);
         $subjects = $classroomDO->getSelectableSubject($classId);
-        print_r($subjects);
 
         return Template::getTwig()->render('classroom/addSubject.twig',
             ['subjects' => $subjects, 'classId' => $classId, 'className' => $className, 'errorMessage' => $errorMessage]);
     }
 
-    public function removeStudentAction(){
-        $errorMessage = null;
-        $classId = \App\Request::getParam('classid');
-        $studentId = \App\Request::getParam('userid');
-        $classroomDO = new Classroom();
-        try {
-            $classroomDO->removeStudent($studentId, $classId);
-        }catch (\Exception $e) {
-            $errorMessage = "Chyba: {$e->getMessage()}";
-        }
-
-        $students = $classroomDO->getClassStudents($classId);
-        $className = $classroomDO->getClassName($classId);
-
-        return Template::getTwig()->render('classroom/students.twig',
-            ['students' => $students, 'classId' => $classId, 'className' => $className, 'errorMessage' => $errorMessage]);
-    }
 
     public function removeSubjectAction(){
         $errorMessage = null;

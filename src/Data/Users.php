@@ -15,18 +15,24 @@ class Users {
      */
     public function getUsers() {
         $db = \App\Db::get();
-        $result = $db->fetchAll("SELECT * FROM users");
+        $result = $db->fetchAll("SELECT * FROM users 
+                                          LEFT JOIN class_students ON class_students.student_login = users.login
+                                          LEFT JOIN classrooms ON classrooms.id = class_students.classroom_id
+                                          ORDER BY role");
         return $result;
     }
 
     /**
      * vymazat pouzivatela z databazy
-     * @param $username
+     * @param $userLogin
      * @throws \Exception
      */
-    public function deleteUser($username) {
+    public function deleteUser($userLogin) {
         $db = \App\Db::get();
-        $db->delete('users', ["login = ?", [$username]]);
+        $db->delete('grades', ["student_login =?", [$userLogin]]);
+        $db->delete('class_students', ["student_login =?", [$userLogin]]);
+        $db->delete('users', ["login = ?", [$userLogin]]);
+
     }
 
     /**
@@ -40,7 +46,7 @@ class Users {
         if (!$userExists) {
             throw new Exception("Používateľ {$username} neexistuje");
         }
-        $data = ['$password' => sha1($password)];
+        $data = ['password' => sha1($password)];
         $db->update('users', $data,["login = ?", [$username]]);
     }
 
@@ -92,14 +98,12 @@ class Users {
      */
     public function getUserData($username) {
         $db = Db::get();
-        $userData = $db->fetchRow("SELECT * FROM users WHERE login = ?", [$username]);
-
+        $userData = $db->fetchRow("SELECT * FROM users 
+                                          LEFT JOIN class_students ON class_students.student_login = users.login
+                                          LEFT JOIN classrooms ON classrooms.id = class_students.classroom_id
+                                          WHERE login = ?", [$username]);
+        //print_r($userData);
         return $userData;
     }
 
-    public function getTeachers(){
-        $db = Db::get();
-        $teachers = $db->fetchAll("SELECT login,meno,priezvisko,user_id FROM users"); //TODO WHERE role = teachers
-        return $teachers;
-    }
 }

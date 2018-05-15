@@ -15,8 +15,7 @@ class Student
     public function getStudentSubjects($studentLogin)
     {
         $db = Db::get();
-        $studentId = $db->fetchOne("SELECT user_id FROM users WHERE login =?",  [$studentLogin]);
-        $classId = $db->fetchOne("SELECT classroom_id FROM class_students WHERE student_id =?", [$studentId]);
+        $classId = $db->fetchOne("SELECT classroom_id FROM class_students WHERE student_login =?", [$studentLogin]);
         $subjects = $db->fetchAll("SELECT * FROM subjects 
                                         JOIN class_subjects ON class_subjects.subject_id = subjects.id
                                         WHERE classroom_id =?", [$classId]);
@@ -26,10 +25,9 @@ class Student
 
     public function getGrades($subjectId, $studentLogin){
         $db = Db::get();
-        $studentId = $db->fetchOne("SELECT user_id FROM users WHERE login =?",  [$studentLogin]);
         $grades = $db->fetchAll("SELECT * FROM grades 
                                        LEFT JOIN subjects ON subjects.id = grades.subject_id 
-                                       WHERE student_id =? AND subject_id =?", [$studentId, $subjectId]);
+                                       WHERE student_login =? AND subject_id =?", [$studentLogin, $subjectId]);
         foreach ($grades as &$grade){
             $grade['date'] = date('d.m.Y',strtotime($grade['date']));
         }

@@ -21,7 +21,7 @@
                 <td>{{ student.meno }}</td>
                 <td>{{ student.priezvisko }}</td>
                 <td>
-                    <a class="btn btn-warning" href="{{ baseUrl }}/teacherMan/studentGrades/studentid/{{ student.user_id }}/subjectid/{{ subjectId }}/classid/{{ classId }}"><i class="fa fa-graduation-cap"></i></a>
+                    <a class="btn btn-warning" href="{{ baseUrl }}/teacherMan/studentGrades/studentlogin/{{ student.login }}/subjectid/{{ subjectId }}/classid/{{ classId }}"><i class="fa fa-graduation-cap"></i></a>
                 </td>
             </tr>
         {% endfor %}

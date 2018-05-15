@@ -40,16 +40,16 @@ class TeacherMan
 
     public function studentGradesAction(){
         $subjectId = \App\Request::getParam('subjectid');
-        $studentId = \App\Request::getParam('studentid');
+        $studentLogin = \App\Request::getParam('studentlogin');
         $classId = \App\Request::getParam('classid');
 
         $teacherDO = new Teacher();
-        $grades = $teacherDO->getGrades($studentId, $subjectId);
-        $studentName = $teacherDO->getStudentName($studentId);
+        $grades = $teacherDO->getGrades($studentLogin, $subjectId);
+        $studentName = $teacherDO->getStudentName($studentLogin);
         $studentName = $studentName['meno']." ".$studentName['priezvisko'];
         $subjectName = $teacherDO->getSubjectName($subjectId);
         return Template::getTwig()->render('teacher/grades.twig',
-            ['grades' => $grades, 'studentId' => $studentId, 'subjectId' => $subjectId,
+            ['grades' => $grades, 'studentLogin' => $studentLogin, 'subjectId' => $subjectId,
                 'studentName' => $studentName, 'subjectName' => $subjectName, 'classId' => $classId]);
     }
 
@@ -65,14 +65,13 @@ class TeacherMan
             try {
                 $teacherDO->save($gradeData);
                 Template::getTwig()->addGlobal('successMessage', "Znamka bola uložena.");
-                //$grades = $teacherDO->getGrades($gradeData['student_id'],$gradeData['subject_id']);
                 return \App\Request::executeAction('teacherMan', 'studentGrades',
-                    ['studentid' => $gradeData['student_id'], 'subjectid' => $gradeData['subject_id'], 'classid' => $classId]);
+                    ['studentlogin' => $gradeData['student_login'], 'subjectid' => $gradeData['subject_id'], 'classid' => $classId]);
             } catch (\Exception $e) {
                 $errorMessage = "Chyba: {$e->getMessage()}";
             }
         } else {
-            $studentId = \App\Request::getParam('studentid');
+            $studentLogin = \App\Request::getParam('studentlogin');
             $subjectId = \App\Request::getParam('subjectid');
             $classId = \App\Request::getParam('classid');
             $editGrade = \App\Request::getParam('gradeid', false);
@@ -80,7 +79,7 @@ class TeacherMan
                 $gradeData = $teacherDO->getGrade($editGrade, $_SESSION['loggedUser']);
             } else {
                 $gradeData = [];
-                $gradeData['student_id'] = $studentId;
+                $gradeData['student_login'] = $studentLogin;
                 $gradeData['subject_id'] = $subjectId;
                 $gradeData['class_id'] = $classId;
             }
@@ -99,7 +98,7 @@ class TeacherMan
         $gradeId = \App\Request::getParam('gradeid');
         $classId = \App\Request::getParam('classid');
         $grade = $teacherDO->getGrade($gradeId);
-        $studentId = $grade["student_id"];
+        $studentLogin = $grade["student_login"];
         $subjectId = $grade["subject_id"];
         try {
             $teacherDO->deleteGrade($gradeId);
@@ -107,7 +106,7 @@ class TeacherMan
             $errorMessage = "Chyba: {$e->getMessage()}";
         }
         return \App\Request::executeAction('teacherMan', 'studentGrades',
-            ['studentid' => $studentId, 'subjectid' => $subjectId, 'classid' => $classId]);
+            ['studentlogin' => $studentLogin, 'subjectid' => $subjectId, 'classid' => $classId]);
 
     }
 

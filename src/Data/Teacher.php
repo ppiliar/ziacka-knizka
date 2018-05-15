@@ -15,10 +15,9 @@ class Teacher
     public function getTeacherSubjects($teacherLogin)
     {
         $db = Db::get();
-        $teacherId = $db->fetchOne("SELECT user_id FROM users WHERE login =?",[$teacherLogin]);
         $subjects = $db->fetchAll("SELECT * FROM subjects 
                                         JOIN class_subjects ON class_subjects.subject_id = subjects.id
-                                        WHERE teacher_id =?", [$teacherId]);
+                                        WHERE teacher_login =?", [$teacherLogin]);
         $classrooms = $db->fetchAll("SELECT * FROM classrooms");
         foreach ($subjects as &$subject) {
             $key = array_search($subject['classroom_id'],array_column($classrooms, 'id'),true);
@@ -36,21 +35,20 @@ class Teacher
      */
     public function getStudents($classId, $subjectId, $teacherLogin){
         $db = Db::get();
-        $teacherId = $db->fetchOne("SELECT user_id FROM users WHERE login =?",[$teacherLogin]);
-        $bondExist = $db->fetchRow("SELECT * FROM subjects WHERE id =? AND teacher_id =?",[$subjectId, $teacherId]);
+        $bondExist = $db->fetchRow("SELECT * FROM subjects WHERE id =? AND teacher_login =?",[$subjectId, $teacherLogin]);
         if($bondExist!=null){
-            $students = $db->fetchAll("SELECT meno,priezvisko,user_id FROM users 
-                      LEFT JOIN class_students ON class_students.student_id = users.user_id 
+            $students = $db->fetchAll("SELECT meno,priezvisko,login FROM users
+                      LEFT JOIN class_students ON class_students.student_login = users.login
                       WHERE class_students.classroom_id = ?", [$classId]);
         }else $students=null;
 
         return $students;
     }
 
-    public function getGrades($studentId, $subjectId){
+    public function getGrades($studentLogin, $subjectId){
         $db =Db::get();
-        $grades = $db->fetchAll("SELECT * FROM grades WHERE student_id =? AND subject_id =?",
-                                [$studentId, $subjectId]);
+        $grades = $db->fetchAll("SELECT * FROM grades WHERE student_login =? AND subject_id =?",
+                                [$studentLogin, $subjectId]);
         foreach ($grades as &$grade){
             $grade['date'] = date('d.m.Y',strtotime($grade['date']));
         }
@@ -91,8 +89,7 @@ class Teacher
     public function deleteGrade($gradeId){
         $db = \App\Db::get();
         $grade = $db->fetchRow("SELECT * FROM grades WHERE grade_id =?", [$gradeId]);
-        $teacherId = $db->fetchOne("SELECT user_id FROM users WHERE login =?",[$_SESSION['loggedUser']]);
-        $bondExist = $db->fetchRow("SELECT * FROM subjects WHERE id =? AND teacher_id =?",[$grade['subject_id'], $teacherId]);
+        $bondExist = $db->fetchRow("SELECT * FROM subjects WHERE id =? AND teacher_login =?",[$grade['subject_id'], $_SESSION['loggedUser']]);
         if($bondExist){
             $db->delete("grades", ["grade_id =?", [$gradeId]]);
         }
@@ -108,8 +105,14 @@ class Teacher
         return $db->fetchOne("SELECT name FROM classrooms WHERE id=?", [$classId]);
     }
 
-    public function getStudentName($studentId){
+    public function getStudentName($studentLogin){
         $db = \App\Db::get();
-        return $db->fetchRow("SELECT meno,priezvisko FROM users WHERE user_id =?", [$studentId]);
+        return $db->fetchRow("SELECT meno,priezvisko FROM users WHERE login =?", [$studentLogin]);
+    }
+
+    public function getTeachers(){
+        $db = Db::get();
+        $teachers = $db->fetchAll("SELECT login,meno,priezvisko FROM users WHERE role = ?", ['teacher']);
+        return $teachers;
     }
 }

@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Data\Teacher;
 use App\Data\Users;
 use App\Security;
 use App\Data\Subject;
@@ -46,8 +47,8 @@ class SubjectMan
             }
         }
 
-        $users = new Users();
-        $teachers = $users->getTeachers();
+        $teacherDO = new Teacher();
+        $teachers = $teacherDO->getTeachers();
         return Template::getTwig()->render('subject/edit.twig', [
             'subject' => $subjectData,
             'teachers' => $teachers,

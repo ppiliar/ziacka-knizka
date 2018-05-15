@@ -3,6 +3,7 @@
 {% block title %}Zoznam používateľov{% endblock %}
 
 {% block content %}
+
     <h3>Zoznam používateľov</h3>
     <p>
     <a class="btn btn-success" href="{{ baseUrl }}/userMan/edit"><i class="fa fa-plus"></i> Nový používateľ</a>
@@ -15,6 +16,7 @@
             <th>Priezvisko</th>
             <th>Mail</th>
             <th>Rola</th>
+            <th>Trieda</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -26,13 +28,48 @@
             <td>{{ user.priezvisko }}</td>
             <td>{{ user.mail }}</td>
             <td>{{ user.role }}</td>
+            <td>{{ user.name }}</td>
             <td>
                 <a class="btn btn-primary" href="{{ baseUrl }}/userMan/edit/username/{{ user.login }}"><i class="fa fa-edit"></i></a>
-                <a class="btn btn-danger" href="{{ baseUrl }}/userMan/delete/username/{{ user.login }}"><i class="fa fa-trash"></i></a>
-                <a class="btn btn-warning" href="{{ baseUrl }}/userMan/passwd/username/{{ user.login }}"><i class="fa fa-key"></i></a>
+                <a class="btn btn-danger text-white" data-toggle="modal" data-target="#deleteModal" data-user={{ user.login }} data-baseurl={{ baseUrl }}><i class="fa fa-trash"></i></a>
+                <a class="btn btn-warning text-white" href="{{ baseUrl }}/userMan/passwd/username/{{ user.login }}"><i class="fa fa-key"></i></a>
             </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Vymazať používateľa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Chcete naozaj vymazať používateľa a všetky jeho známky?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
+                    <a id="yes" class="btn btn-primary" href="#">Áno</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    $(document).ready(function(){
+        $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var user = button.data('user');
+        var modal = $(this);
+            modal.find('.modal-title').html("Vymazať používateľa <b>" + user + "</b>?");
+            modal.find('#yes').attr("href", "{{ baseUrl }}/userMan/delete/username/"+user);
+        });
+    });
 {% endblock %}
