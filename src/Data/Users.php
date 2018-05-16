@@ -29,8 +29,14 @@ class Users {
      */
     public function deleteUser($userLogin) {
         $db = \App\Db::get();
-        $db->delete('grades', ["student_login =?", [$userLogin]]);
-        $db->delete('class_students', ["student_login =?", [$userLogin]]);
+        $userRole = $db->fetchOne("SELECT role FROM users WHERE login = ?", [$userLogin]);
+        if($userRole == 'student') {
+            $db->delete('grades', ["student_login =?", [$userLogin]]);
+            $db->delete('class_students', ["student_login =?", [$userLogin]]);
+        }
+        if($userRole == 'teacher'){
+            $db->execQuery("UPDATE subjects SET teacher_login = NULL WHERE teacher_login = ?;", [$userLogin]);
+        }
         $db->delete('users', ["login = ?", [$userLogin]]);
 
     }

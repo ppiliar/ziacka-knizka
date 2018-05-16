@@ -2,17 +2,17 @@ $(document).ready(function(){
     $('#deleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var user = button.data('user');
+        var baseUrl = button.data('baseurl');
         var modal = $(this);
         modal.find('.modal-title').html("Vymazať používateľa <b>" + user + "</b>?");
-        modal.find('#yes').attr("href", "{{ baseUrl }}/userMan/delete/username/"+user);
+        modal.find('#yes').attr("href", baseUrl+"/userMan/delete/username/"+user);
     });
 });
 
 
 $('document').ready(function(){
 var table = $('table');
-
-$('#login, #class, #role, #sort')
+$('.sort')
     .wrapInner('<span title="Usporiadať"/>')
     .each(function(){
 

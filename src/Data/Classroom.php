@@ -135,7 +135,7 @@ class Classroom
             }
         }
         foreach ($subjects as &$sub){
-            $login = $sub['teacher_name'];
+            $login = $sub['teacher_login'];
             $name = $db->fetchRow("SELECT meno,priezvisko,login FROM users WHERE login =?", [$login]);
             $sub['teacher_name']=$name['login'];
         }

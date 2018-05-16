@@ -42,7 +42,7 @@
                             <label>Trieda</label>
                             <select class="form-control" id="classroom_id" name="classroom_id">
                                 {% for classroom in classrooms %}
-                                    <option value={{ classroom.id }} {{ (userData.name == classroom.name) ? 'selected' }}>{{ classroom.name }}</option>
+                                    <option value="{{ classroom.id }}" {{ (userData.name == classroom.name) ? 'selected' }}>{{ classroom.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>

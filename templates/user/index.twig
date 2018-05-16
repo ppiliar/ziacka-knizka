@@ -11,12 +11,12 @@
     <table class="table table-striped table-hover table-bordered" id="users">
         <thead>
         <tr>
-            <th id="login">Login</th>
+            <th class="sort"><i class="fa fa-sort"></i>Login</th>
             <th>Meno</th>
             <th>Priezvisko</th>
             <th>Mail</th>
-            <th id="role">Rola</th>
-            <th id="class">Trieda</th>
+            <th class="sort"><i class="fa fa-sort"></i>Rola</th>
+            <th class="sort"><i class="fa fa-sort"></i>2Trieda</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -30,9 +30,16 @@
             <td>{{ user.role }}</td>
             <td>{{ user.name }}</td>
             <td>
-                <a class="btn btn-primary" href="{{ baseUrl }}/userMan/edit/username/{{ user.login }}"><i class="fa fa-edit"></i></a>
-                <a class="btn btn-danger text-white" data-toggle="modal" data-target="#deleteModal" data-user={{ user.login }} data-baseurl={{ baseUrl }}><i class="fa fa-trash"></i></a>
-                <a class="btn btn-warning text-white" href="{{ baseUrl }}/userMan/passwd/username/{{ user.login }}"><i class="fa fa-key"></i></a>
+                <a class="btn btn-primary" href="{{ baseUrl }}/userMan/edit/username/{{ user.login }}">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a class="btn btn-danger text-white" data-toggle="modal" data-target="#deleteModal"
+                   data-user="{{ user.login }}" data-baseurl="{{ baseUrl }}">
+                    <i class="fa fa-trash"></i>
+                </a>
+                <a class="btn btn-warning text-white" href="{{ baseUrl }}/userMan/passwd/username/{{ user.login }}">
+                    <i class="fa fa-key"></i>
+                </a>
             </td>
         </tr>
         {% endfor %}
@@ -60,18 +67,3 @@
         </div>
     </div>
 {% endblock %}
-
-{# TODO script do suboru#}
-{#
-{% block script %}
-    $(document).ready(function(){
-        $('#deleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var user = button.data('user');
-        var modal = $(this);
-            modal.find('.modal-title').html("Vymazať používateľa <b>" + user + "</b>?");
-            modal.find('#yes').attr("href", "{{ baseUrl }}/userMan/delete/username/"+user);
-        });
-    });
-{% endblock %}
-#}
