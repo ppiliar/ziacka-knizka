@@ -4,15 +4,14 @@
 
 {% block content %}
     <h3>Pridat ziakov do {{ className }}</h3>
-    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/students/classid/{{ classId }}"><i class="fa fa-plus"></i> Spat na zoznam ziakov</a>
-    <table class="table table-striped table-hover table-bordered">
+    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/students/classid/{{ classId }}"><i class="fa fa-arrow-left"></i> Spat na zoznam ziakov</a>
+    <table class="table table-striped table-hover table-bordered" id="table">
         <thead>
         <tr>
-            <th>Login</th>
+            <th id="sort">Login</th>
             <th>Meno</th>
-            <th>Priezvisko</th>
+            <th id="sort">Priezvisko</th>
             <th>Mail</th>
-            <th>Rola</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -24,7 +23,6 @@
                 <td>{{ user.meno }}</td>
                 <td>{{ user.priezvisko }}</td>
                 <td>{{ user.mail }}</td>
-                <td>{{ user.role }}</td>
                 <td>
                     <a class="btn btn-success" href="{{ baseUrl }}/classMan/addStudent/classid/{{ classId }}/studentlogin/{{ user.login }}"><i class="fa fa-check"></i></a>
                 </td>

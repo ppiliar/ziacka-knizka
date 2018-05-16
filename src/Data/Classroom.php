@@ -143,6 +143,14 @@ class Classroom
         return $subjects;
     }
 
+    public function getStudents(){
+        $db = \App\Db::get();
+        $result = $db->fetchAll("SELECT * FROM users 
+                                    LEFT JOIN class_students ON users.login = class_students.student_login
+                                    LEFT JOIN classrooms ON class_students.classroom_id = classrooms.id
+                                    WHERE role=?", ["student"]);
+        return $result;
+    }
     /**
      * Pridat ziaka do triedy
      * @param $studentLogin

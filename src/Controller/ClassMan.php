@@ -90,7 +90,7 @@ class ClassMan
             $classroom->addStudent($studentLogin, $classId);
         }
 
-        $userlist = $classroom->getUsers();
+        $userlist = $classroom->getStudents();
         $className = $classroom->getClassName($classId);
         //print_r($userlist);
         return Template::getTwig()->render('classroom/addStudent.twig',
