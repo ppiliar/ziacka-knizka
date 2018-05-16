@@ -84,4 +84,28 @@ class User
         return Template::getTwig()->render('user/login.twig', ['successMessage' => 'Boli ste úspešne odhlásený.']);
     }
 
+    public function settingsAction()
+    {
+        $errorMessage = null;
+        if (\App\Request::isPost()) {
+            $users = new Users();
+            $password1 = \App\Request::getParam('heslo1');
+            $password2 = \App\Request::getParam('heslo2');
+            try {
+                if ($password1 != $password2) {
+                    throw new \Exception("Heslá sa nezhodujú!");
+                }
+
+                $users->setPassword($_SESSION['loggedUser'], $password1);
+                Template::getTwig()->addGlobal('successMessage', "Heslo pre používateľa {$_SESSION['loggedUser']} bolo nastavené.");
+                return \App\Request::executeAction('index', 'index');
+            } catch (\Exception $e) {
+                $errorMessage = "Chyba: {$e->getMessage()}";
+            }
+        }
+        return Template::getTwig()->render('settings/psswd.twig', [
+            'username' => $_SESSION['loggedUser'],
+            'errorMessage' => $errorMessage
+        ]);
+    }
 }
