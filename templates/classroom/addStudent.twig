@@ -1,10 +1,11 @@
 {% extends '/base.twig' %}
 
-{% block title %}Pridat ziaka{% endblock %}
+{% block title %}Pridať žiaka{% endblock %}
 
 {% block content %}
-    <h3>Pridat ziakov do {{ className }}</h3>
-    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/students/classid/{{ classId }}"><i class="fa fa-arrow-left"></i> Spat na zoznam ziakov</a>
+    <h3>Pridať žiakov do {{ className }}</h3>
+    <a class="btn btn-danger" href="{{ baseUrl }}/classMan/students/classid/{{ classId }}">
+        <i class="fa fa-arrow-left"></i> Späť na zoznam žiakov</a>
     <table class="table table-striped table-hover table-bordered" id="table">
         <thead>
         <tr>

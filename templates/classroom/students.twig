@@ -1,12 +1,12 @@
 {% extends '/base.twig' %}
 
-{% block title %}Zoznam ziakov v {{ className }}{% endblock %}
+{% block title %}Zoznam žiakov v {{ className }}{% endblock %}
 
 {% block content %}
-    <h3>Zoznam ziakov v {{ className }}</h3>
+    <h3>Zoznam žiakov v {{ className }}</h3>
     <p>
-        <a class="btn btn-danger" href="{{ baseUrl }}/classMan"><i class="fa fa-arrow-left"></i> Spat</a>
-        <a class="btn btn-success" href="{{ baseUrl }}/classMan/addStudent/classid/{{ classId }}"><i class="fa fa-plus"></i> Pridat ziaka do triedy</a>
+        <a class="btn btn-danger" href="{{ baseUrl }}/classMan"><i class="fa fa-arrow-left"></i> Späť</a>
+        <a class="btn btn-success" href="{{ baseUrl }}/classMan/addStudent/classid/{{ classId }}"><i class="fa fa-plus"></i> Pridať žiaka do triedy</a>
     </p>
     <table class="table table-striped table-hover table-bordered">
         <thead>
