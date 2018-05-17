@@ -124,7 +124,20 @@ class Request {
         self::$parsedUrl['params'] = $params;
         Template::getTwig()->addGlobal('request', self::$parsedUrl);
 
-        return $controller->$actionMethodName();
+        if(Security::hasAccess($controller)) {
+            return $controller->$actionMethodName();
+        }else{
+            if(isset($_SESSION['loggedUserRole'])) {
+                $controller = self::getControllerByName('index');
+                $actionMethodName = "indexAction";
+                Template::getTwig()->addGlobal('errorMessage', 'Access dennied');
+                return $controller->$actionMethodName();
+            }else{
+                $controller = self::getControllerByName('user');
+                $actionMethodName = "loginAction";
+                return $controller->$actionMethodName();
+            }
+        }
     }
 
     /**
