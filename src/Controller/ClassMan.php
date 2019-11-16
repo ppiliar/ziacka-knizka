@@ -17,7 +17,6 @@ use App\Template;
 class ClassMan
 {
     public function indexAction(){
-        Security::isGranted('admin');
         $classroomDO = new Classroom();
         $classrooms = $classroomDO->getClassrooms();
 

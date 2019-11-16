@@ -212,4 +212,105 @@ class Classroom
         $db = \App\Db::get();
         $db->delete("class_subjects", ["subject_id = ? AND classroom_id = ?", [$subjectId,$classId]]);
     }
+
+    public function getStatsData(){
+        $db = Db::get();
+
+        $classrooms = $db->fetchAll("SELECT * FROM classrooms");
+        $students = $db->fetchAll("SELECT COUNT(student_login) AS nostudents FROM classrooms
+                                        LEFT JOIN class_students ON class_students.classroom_id = classrooms.id
+                                        GROUP BY classrooms.id");
+        $subjects = $db ->fetchAll("SELECT * FROM subjects");
+        #print_r($classrooms);
+        foreach ($classrooms as &$classroom){
+            $classsub = $db->fetchAll("SELECT * FROM subjects 
+                                           LEFT JOIN class_subjects ON class_subjects.subject_id = subjects.id
+                                           WHERE class_subjects.classroom_id = ?", [$classroom['id']]);
+            foreach ($classsub as $class){
+                $grades = $db->fetchAll("SELECT * FROM grades WHERE ");
+            }
+            print_r($classsub);
+            //$subjects = $db->fetchAll("SELECT * FROM class_subjects WHERE classroom_id= ?", [$classroom['id']]);
+            $classroom['subjects'] = $subjects;
+        }
+        //print_r($classrooms);
+
+
+        foreach ($classrooms as $key => &$classroom){
+            $classroom['nostudents'] = $students[$key]['nostudents'];
+        }
+
+        return $classrooms;
+    }
+
+    public function getAllSubjects(){
+        $db = DB::get();
+        $result = $db->fetchAll("SELECT * FROM subjects");
+        return $result;
+    }
+    public function getD(){
+        $db = DB::get();
+        $classrooms = $db->fetchAll("SELECT * FROM classrooms");
+        $subjects = $db->fetchAll("SELECT * FROM subjects");
+
+        foreach ($classrooms as &$classroom) {
+            $grades = [];
+            $students = $db->fetchAll("SELECT * FROM class_students WHERE class_students.classroom_id = ?", [$classroom['id']]);
+            //print_r($students);
+            //echo "<br>";
+            $sumall=0;
+            $noall=0;
+            foreach ($subjects as $subject) {
+                $sum = 0;
+                $no = 0;
+                foreach ($students as $student) {
+                    //print_r($student);
+                    $grades = $db->fetchAll("SELECT * FROM grades WHERE student_login =? AND subject_id =?", [$student['student_login'], $subject['id']]);
+                    foreach ($grades as $grade) {
+                        $sum += $grade['grade'];
+                        $no = $no + 1;
+                        $sumall += $grade['grade'];
+                        $noall = $noall+1;
+                    }
+
+                    //echo "student grades";
+                    //print_r($grades);
+                    //array_push($grades,$db->fetchAll("SELECT * FROM grades WHERE student_login =?", [$student['student_login']]));
+
+                }
+                //echo "no ".$no;
+                if($no != 0) {
+                    $classroom[$subject['id']] = number_format($sum / $no,2);
+                }else {
+                    $classroom[$subject['id']]=0;
+                }
+                if($noall != 0) {
+                    $classroom['avg'] =  number_format($sumall / $noall,2);
+                }else {
+                    $classroom['avg']=0;
+                }
+            }
+        }
+        //print_r($classrooms);
+
+        $students = $db->fetchAll("SELECT COUNT(student_login) AS nostudents FROM classrooms
+                                        LEFT JOIN class_students ON class_students.classroom_id = classrooms.id
+                                        GROUP BY classrooms.id");
+        foreach ($classrooms as $key => &$classroom){
+            $classroom['nostudents'] = $students[$key]['nostudents'];
+        }
+
+        $bestStudents = [];
+        foreach ($classrooms as &$classroom) {
+            $bestStud = $db->fetchAll("SELECT c.name, g.student_login, avg(grade) as priemer FROM `grades` g JOIN class_students cs ON cs.student_login = g.student_login JOIN classrooms c ON c.id = cs.classroom_id WHERE c.id = ? group by student_login order by priemer limit 3 ", [$classroom['id']]);
+
+
+            array_push($bestStudents, $bestStud);
+            $classroom['best3'] = $bestStud;
+        }
+
+        print_r($classrooms);
+        return $classrooms;
+
+    }
 }

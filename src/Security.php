@@ -60,6 +60,11 @@ class Security
                 return false;
             }else return true;
         }
+        if($controller instanceof \App\Controller\Stats){
+            if(!isset($_SESSION['loggedUserRole']) || $_SESSION['loggedUserRole'] != 'admin'){
+                return false;
+            }else return true;
+        }
 
     }
 }
